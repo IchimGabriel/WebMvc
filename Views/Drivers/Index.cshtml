@@ -1,0 +1,45 @@
+﻿@model IEnumerable<WebMvc.Models.Driver>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="bg-info text-white">Drivers</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-secondary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th><th>
+                OnLine
+            </th><th>
+                OnDelivery
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OnLine)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OnDelivery)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.DriverId" class="btn btn-primary">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DriverId" class="btn btn-secondary">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DriverId" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,137 @@
+﻿<remove name="FormsAuthentication" />
+<add name="FormsAuthentication" type="System.Web.Security.FormsAuthenticationModule" />
+@model IEnumerable<WebMvc.Models.Order>
+
+@{
+    ViewBag.Title = "AllOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<hr />
+<hr />
+@if(User.Identity.IsAuthenticated && @ViewBag.Online == false)
+{
+    using (Html.BeginForm("DriverOnline", "Drivers", FormMethod.Post, new { id = "openForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-8"><h2>Orders</h2></div>
+            <div class="col-4">
+
+                <!-- Button trigger modal  -->
+                <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#openShop">
+                    You are OffLine
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="openShop" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Online</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Make yourself available !
+                            </div>
+                            <div class="modal-footer">
+                                <ul>
+                                    <li class="btn btn-success"><a style="text-decoration:none; color: azure;" href="javascript:document.getElementById('openForm').submit()">Online</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+}
+else
+{
+    using (Html.BeginForm("DriverOffline", "Drivers", FormMethod.Post, new { id = "openForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-8">
+                <h2>Orders</h2>
+            </div>
+            <div class="col-4">
+
+                <!-- Button trigger modal  -->
+                <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#closeShop">
+                    You are OnLine
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="closeShop" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">OnLine</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Have a good night !
+                            </div>
+                            <div class="modal-footer">
+                                <ul>
+                                    <li class="btn btn-danger"><a style="text-decoration:none; color: azure;" href="javascript:document.getElementById('openForm').submit()">Off Line</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+        <hr />
+    <table class="table">
+        <tr>
+            <th>
+                TimeStamp
+            </th><th>
+                Total
+            </th><th>
+                Commission
+            </th><th>
+                Address
+            </th><th>
+                DriverIdentity
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TimeStamp)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Commission)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DriverIdentity)
+                </td>
+                <td>
+                    @Html.ActionLink("READY", "AddDriver", new { id = item.OrderId },new { @class= "btn btn-secondary"})
+                    @*@Html.ActionLink("Details", "Details", new { id = item.OrderId })*@
+                </td>
+            </tr>
+        }
+
+    </table>
+
+  
